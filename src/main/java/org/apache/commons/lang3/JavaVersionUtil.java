@@ -28,7 +28,7 @@ public final class JavaVersionUtil {
 			//
 			for (final JavaVersion jv : jvs) {
 				//
-				if (jv == null || (name = jv.name()) == null) {
+				if ((name = name(jv)) == null) {
 					//
 					continue;
 					//
@@ -109,6 +109,10 @@ public final class JavaVersionUtil {
 
 	private static int size(final Collection<?> instance) {
 		return instance != null ? instance.size() : 0;
+	}
+
+	private static String name(final Enum<?> instance) {
+		return instance != null ? instance.name() : null;
 	}
 
 	private static String getName(final Member instance) {
