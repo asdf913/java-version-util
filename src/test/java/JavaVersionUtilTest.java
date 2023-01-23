@@ -10,6 +10,25 @@ public class JavaVersionUtilTest {
 	@Test
 	public void testGetJavaVersionAsInt() throws IOException {
 		//
+		final Integer major = getClassMajorNumber();
+		//
+		final int version = JavaVersionUtil.getJavaVersionAsInt();
+		//
+		Assert.assertEquals(toString(major) + "!=" + version, Integer.valueOf(intValue(major, 0) - 44),
+				Integer.valueOf(version));
+		//
+	}
+
+	private static String toString(final Object instance) {
+		return instance != null ? instance.toString() : null;
+	}
+
+	private static int intValue(final Number instance, final int defaultValue) {
+		return instance != null ? instance.intValue() : defaultValue;
+	}
+
+	private static Integer getClassMajorNumber() throws IOException {
+		//
 		InputStream is = null;
 		//
 		DataInputStream dis = null;
@@ -29,12 +48,7 @@ public class JavaVersionUtilTest {
 			//
 			// major
 			//
-			final int major = 0xFFFF & dis.readShort();
-			//
-			final int version = JavaVersionUtil.getJavaVersionAsInt();
-			//
-			Assert.assertEquals(Integer.toString(major) + "!=" + version, Integer.valueOf(major - 44),
-					Integer.valueOf(version));
+			return Integer.valueOf(0xFFFF & dis.readShort());
 			//
 		} finally {
 			//
