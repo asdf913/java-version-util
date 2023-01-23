@@ -40,7 +40,7 @@ public final class SourceVersionUtil {
 			//
 			for (final SourceVersion sv : svs) {
 				//
-				if (sv == null || (name = sv.name()) == null) {
+				if ((name = name(sv)) == null) {
 					//
 					continue;
 					//
@@ -68,6 +68,10 @@ public final class SourceVersionUtil {
 			//
 		return list;
 		//
+	}
+
+	private static String name(final Enum<?> instance) {
+		return instance != null ? instance.name() : null;
 	}
 
 	private static Integer getJavaVersionAsInteger() {
