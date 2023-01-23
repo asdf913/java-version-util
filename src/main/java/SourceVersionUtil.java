@@ -138,7 +138,15 @@ public final class SourceVersionUtil {
 			//
 			return 2;
 			//
-		} else if (forName("java.lang.Object") != null) {
+		} // if
+			//
+		return getJavaVersionAsInteger1();
+		//
+	}
+
+	private static Integer getJavaVersionAsInteger1() {
+		//
+		if (forName("java.lang.Object") != null) {
 			//
 			return 1;
 			//
