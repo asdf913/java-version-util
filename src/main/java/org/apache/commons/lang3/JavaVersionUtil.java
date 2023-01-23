@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -51,7 +52,7 @@ public final class JavaVersionUtil {
 					//
 			} // for
 				//
-			final int size = list != null ? list.size() : 0;
+			final int size = size(list);
 			//
 			if (size == 1) {
 				//
@@ -106,6 +107,10 @@ public final class JavaVersionUtil {
 		//
 	}
 
+	private static int size(final Collection<?> instance) {
+		return instance != null ? instance.size() : 0;
+	}
+
 	private static String getName(final Member instance) {
 		return instance != null ? instance.getName() : null;
 	}
@@ -151,7 +156,7 @@ public final class JavaVersionUtil {
 				//
 		} // for
 			//
-		final int size = fields != null ? fields.size() : 0;
+		final int size = size(fields);
 		//
 		if (size == 1) {
 			//
