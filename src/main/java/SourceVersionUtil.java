@@ -40,26 +40,22 @@ public final class SourceVersionUtil {
 			//
 			for (final SourceVersion sv : svs) {
 				//
-				if ((name = name(sv)) == null) {
+				if ((name = name(sv)) == null || !name.endsWith(integer.toString())) {
 					//
 					continue;
 					//
 				} // if
 					//
-				if (name.endsWith(integer.toString())) {
+				if (list == null) {
 					//
-					if (list == null) {
-						//
-						list = new ArrayList<SourceVersion>();
-						//
-					} // if
-						//
-					if (!list.contains(sv)) {
-						//
-						list.add(sv);
-						//
-					} // if
-						//
+					list = new ArrayList<SourceVersion>();
+					//
+				} // if
+					//
+				if (!list.contains(sv)) {
+					//
+					list.add(sv);
+					//
 				} // if
 					//
 			} // for
