@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.List;
 
 import javax.lang.model.SourceVersion;
 
@@ -12,13 +13,17 @@ import org.junit.Test;
 
 public class SourceVersionUtilTest {
 
-	private static Method METHOD_GET_JAVA_VERSION_AS_INTEGER_1 = null;
+	private static Method METHOD_GET_JAVA_VERSION_AS_INTEGER_1, METHOD_GET_JAVA_VERSION_AS_SOURCE_VERSION_LIST = null;
 
 	@BeforeClass
-	static void beforeClass() throws NoSuchMethodException {
+	public static void beforeClass() throws NoSuchMethodException {
 		//
-		(METHOD_GET_JAVA_VERSION_AS_INTEGER_1 = SourceVersionUtil.class.getDeclaredMethod("getJavaVersionAsInteger1"))
-				.setAccessible(true);
+		final Class<?> clz = SourceVersionUtil.class;
+		//
+		(METHOD_GET_JAVA_VERSION_AS_INTEGER_1 = clz.getDeclaredMethod("getJavaVersionAsInteger1")).setAccessible(true);
+		//
+		(METHOD_GET_JAVA_VERSION_AS_SOURCE_VERSION_LIST = clz.getDeclaredMethod("getJavaVersionAsSourceVersionList",
+				SourceVersion[].class)).setAccessible(true);
 		//
 	}
 
@@ -92,6 +97,29 @@ public class SourceVersionUtilTest {
 				return null;
 			} else if (obj instanceof Integer) {
 				return (Integer) obj;
+			} // if
+			throw new Throwable(toString(obj.getClass()));
+		} catch (InvocationTargetException e) {
+			throw e.getTargetException();
+		}
+	}
+
+	@Test
+	public void testGetJavaVersionAsSourceVersionList() throws Throwable {
+		//
+		Assert.assertNull(getJavaVersionAsSourceVersionList(null));
+		//
+		Assert.assertNull(getJavaVersionAsSourceVersionList(new SourceVersion[] { null }));
+		//
+	}
+
+	private static List<SourceVersion> getJavaVersionAsSourceVersionList(final SourceVersion[] svs) throws Throwable {
+		try {
+			final Object obj = METHOD_GET_JAVA_VERSION_AS_SOURCE_VERSION_LIST.invoke(null, (Object) svs);
+			if (obj == null) {
+				return null;
+			} else if (obj instanceof List) {
+				return (List) obj;
 			} // if
 			throw new Throwable(toString(obj.getClass()));
 		} catch (InvocationTargetException e) {

@@ -10,15 +10,33 @@ public final class SourceVersionUtil {
 
 	public static SourceVersion getJavaVersionAsSourceVersion() {
 		//
-		final Integer integer = getJavaVersionAsInteger();
+		final List<SourceVersion> list = getJavaVersionAsSourceVersionList(SourceVersion.values());
 		//
-		final SourceVersion[] svs = SourceVersion.values();
+		final int size = list != null ? list.size() : 0;
+		//
+		if (size == 1) {
+			//
+			return list.get(0);
+			//
+		} else if (size > 1) {
+			//
+			throw new IllegalStateException();
+			//
+		} // if
+			//
+		return null;
+		//
+	}
+
+	private static List<SourceVersion> getJavaVersionAsSourceVersionList(final SourceVersion[] svs) {
+		//
+		List<SourceVersion> list = null;
+		//
+		final Integer integer = getJavaVersionAsInteger();
 		//
 		if (svs != null && integer != null) {
 			//
 			String name = null;
-			//
-			List<SourceVersion> list = null;
 			//
 			for (final SourceVersion sv : svs) {
 				//
@@ -46,21 +64,9 @@ public final class SourceVersionUtil {
 					//
 			} // for
 				//
-			final int size = list != null ? list.size() : 0;
-			//
-			if (size == 1) {
-				//
-				return list.get(0);
-				//
-			} else if (size > 1) {
-				//
-				throw new IllegalStateException();
-				//
-			} // if
-				//
 		} // if
 			//
-		return null;
+		return list;
 		//
 	}
 
