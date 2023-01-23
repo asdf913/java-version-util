@@ -132,10 +132,6 @@ public final class SourceVersionUtil {
 			//
 			return 5;
 			//
-		} else if (forName("java.nio.ByteBuffer") != null) {
-			//
-			return 4;
-			//
 		} // if
 			//
 		return getJavaVersionAsInteger1();
@@ -144,7 +140,11 @@ public final class SourceVersionUtil {
 
 	private static Integer getJavaVersionAsInteger1() {
 		//
-		if (forName("java.lang.reflect.InvocationHandler") != null) {
+		if (forName("java.nio.ByteBuffer") != null) {
+			//
+			return 4;
+			//
+		} else if (forName("java.lang.reflect.InvocationHandler") != null) {
 			//
 			return 3;
 			//
