@@ -3,6 +3,20 @@ public final class JavaVersionUtil {
 	private JavaVersionUtil() {
 	}
 
+	public static int getJavaVersionAsInt() {
+		//
+		final Integer integer = getJavaVersionAsInteger();
+		//
+		if (integer != null) {
+			//
+			return integer.intValue();
+			//
+		} // if
+			//
+		throw new IllegalStateException();
+		//
+	}
+
 	public static Integer getJavaVersionAsInteger() {
 		//
 		if (forName("java.lang.WrongThreadException") != null) {

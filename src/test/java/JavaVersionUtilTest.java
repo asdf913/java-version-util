@@ -8,7 +8,7 @@ import org.junit.Test;
 public class JavaVersionUtilTest {
 
 	@Test
-	public void testGetJavaVersionAsInteger() throws IOException {
+	public void testGetJavaVersionAsInt() throws IOException {
 		//
 		InputStream is = null;
 		//
@@ -31,9 +31,10 @@ public class JavaVersionUtilTest {
 			//
 			final int major = 0xFFFF & dis.readShort();
 			//
-			final Integer version = JavaVersionUtil.getJavaVersionAsInteger();
+			final int version = JavaVersionUtil.getJavaVersionAsInt();
 			//
-			Assert.assertEquals(Integer.toString(major) + "!=" + version, Integer.valueOf(major - 44), version);
+			Assert.assertEquals(Integer.toString(major) + "!=" + version, Integer.valueOf(major - 44),
+					Integer.valueOf(version));
 			//
 		} finally {
 			//
