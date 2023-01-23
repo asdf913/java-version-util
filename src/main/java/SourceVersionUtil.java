@@ -140,10 +140,6 @@ public final class SourceVersionUtil {
 			//
 			return 4;
 			//
-		} else if (forName("java.lang.reflect.InvocationHandler") != null) {
-			//
-			return 3;
-			//
 		} // if
 			//
 		return getJavaVersionAsInteger1();
@@ -152,7 +148,11 @@ public final class SourceVersionUtil {
 
 	private static Integer getJavaVersionAsInteger1() {
 		//
-		if (forName("java.util.Collection") != null) {
+		if (forName("java.lang.reflect.InvocationHandler") != null) {
+			//
+			return 3;
+			//
+		} else if (forName("java.util.Collection") != null) {
 			//
 			return 2;
 			//
