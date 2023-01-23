@@ -79,22 +79,6 @@ public final class JavaVersionUtil {
 			//
 			return 5;
 			//
-		} else if (forName("java.nio.ByteBuffer") != null) {
-			//
-			return 4;
-			//
-		} else if (forName("java.lang.reflect.InvocationHandler") != null) {
-			//
-			return 3;
-			//
-		} else if (forName("java.util.Collection") != null) {
-			//
-			return 2;
-			//
-		} else if (forName("java.lang.Object") != null) {
-			//
-			return 1;
-			//
 		} // if
 			//
 		return getJavaVersionAsInteger1();
