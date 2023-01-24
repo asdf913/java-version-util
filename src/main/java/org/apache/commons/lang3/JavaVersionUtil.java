@@ -18,23 +18,50 @@ public final class JavaVersionUtil {
 		//
 		final Integer integer = getJavaVersionAsInteger();
 		//
-		final JavaVersion[] jvs = JavaVersion.values();
+		final List<JavaVersion> list = getJavaVersionsByVersion(JavaVersion.values(), integer);
 		//
-		if (jvs != null && integer != null) {
+		final int size = size(list);
+		//
+		if (size == 1) {
 			//
-			String name = null;
+			return list.get(0);
 			//
-			List<JavaVersion> list = null;
+		} else if (size > 1) {
+			//
+			// For JAVA_1_9 and JAVA_9 case
+			//
+			final Field[] fs = JavaVersion.class.getDeclaredFields();
+			//
+			return Collections.max(list, new Comparator<JavaVersion>() {
+
+				@Override
+				public int compare(final JavaVersion jv1, final JavaVersion jv2) {
+					//
+					return ObjectUtils.compare(
+							Double.valueOf(StringUtils.replace(
+									StringUtils.substringAfter(getName(getFieldByValue(fs, jv1)), "_"), "_", ".")),
+							Double.valueOf(StringUtils.replace(
+									StringUtils.substringAfter(getName(getFieldByValue(fs, jv2)), "_"), "_", ".")));
+					//
+				}
+
+			});
+			//
+		} // if
+			//
+		return null;
+		//
+	}
+
+	private static List<JavaVersion> getJavaVersionsByVersion(final JavaVersion[] jvs, final Integer version) {
+		//
+		List<JavaVersion> list = null;
+		//
+		if (jvs != null) {
 			//
 			for (final JavaVersion jv : jvs) {
 				//
-				if ((name = name(jv)) == null) {
-					//
-					continue;
-					//
-				} // if
-					//
-				if (name.endsWith(integer.toString())) {
+				if (StringUtils.equals(toString(jv), toString(version))) {
 					//
 					if (list == null) {
 						//
@@ -52,67 +79,18 @@ public final class JavaVersionUtil {
 					//
 			} // for
 				//
-			final int size = size(list);
-			//
-			if (size == 1) {
-				//
-				return list.get(0);
-				//
-			} else if (size > 1) {
-				//
-				// For JAVA_1_9 and JAVA_9 case
-				//
-				JavaVersion jv = null;
-				//
-				for (int i = size - 1; i >= 0; i--) {
-					//
-					if ((jv = list.get(i)) == null) {
-						//
-						continue;
-						//
-					} // if
-						//
-						// Remove JAVA_0_9
-						//
-					if (integer != null && !jv.toString().equals(integer.toString())) {
-						//
-						list.remove(i);
-						//
-					} // if
-						//
-				} // for
-					//
-				final Field[] fs = JavaVersion.class.getDeclaredFields();
-				//
-				return Collections.max(list, new Comparator<JavaVersion>() {
-
-					@Override
-					public int compare(final JavaVersion jv1, final JavaVersion jv2) {
-						//
-						return ObjectUtils.compare(
-								Double.valueOf(StringUtils.replace(
-										StringUtils.substringAfter(getName(getFieldByValue(fs, jv1)), "_"), "_", ".")),
-								Double.valueOf(StringUtils.replace(
-										StringUtils.substringAfter(getName(getFieldByValue(fs, jv2)), "_"), "_", ".")));
-						//
-					}
-
-				});
-				//
-			} // if
-				//
 		} // if
 			//
-		return null;
+		return list;
 		//
+	}
+
+	private static String toString(final Object instance) {
+		return instance != null ? instance.toString() : null;
 	}
 
 	private static int size(final Collection<?> instance) {
 		return instance != null ? instance.size() : 0;
-	}
-
-	private static String name(final Enum<?> instance) {
-		return instance != null ? instance.name() : null;
 	}
 
 	private static String getName(final Member instance) {
