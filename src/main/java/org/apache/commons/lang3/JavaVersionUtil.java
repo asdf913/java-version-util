@@ -14,10 +14,8 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.jsoup.select.Selector;
 
 public final class JavaVersionUtil {
 
@@ -137,13 +135,11 @@ public final class JavaVersionUtil {
 					Jsoup.parse(new URL("https://www.oracle.com/java/technologies/downloads/archive/"), 0),
 					".icn-chevron-right a");
 			//
-			Element element = null;
-			//
 			String text = null;
 			//
 			for (int i = 0; elements != null && i < elements.size(); i++) {
 				//
-				if ((element = elements.get(i)) == null || !StringUtils.startsWith(text = element.text(), "Java SE")) {
+				if (!StringUtils.startsWith(text = text(elements.get(i)), "Java SE")) {
 					//
 					continue;
 					//
@@ -181,6 +177,10 @@ public final class JavaVersionUtil {
 
 	private static Elements select(final Element instance, final String cssQuery) {
 		return instance != null ? instance.select(cssQuery) : null;
+	}
+
+	private static String text(final Element instance) {
+		return instance != null ? instance.text() : null;
 	}
 
 	private static List<JavaVersion> getJavaVersionsByVersion(final JavaVersion[] jvs, final Integer version) {
