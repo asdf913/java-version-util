@@ -61,14 +61,10 @@ public final class JavaVersionUtil {
 
 			});
 			//
-		} else if (size == 0) {
+		} else if (size == 0 && version != null && version.equals(getLatestJavaVersionAsInteger())) {
 			//
-			if (version != null && version.equals(getLatestJavaVersionAsInteger())) {
-				//
-				return JavaVersion.JAVA_RECENT;
-				//
-			} // if
-				//
+			return JavaVersion.JAVA_RECENT;
+			//
 		} // if
 			//
 		throw new IllegalStateException();
