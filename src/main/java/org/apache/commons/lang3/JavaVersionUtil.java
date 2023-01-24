@@ -1,6 +1,8 @@
 package org.apache.commons.lang3;
 
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Modifier;
@@ -22,9 +24,7 @@ public final class JavaVersionUtil {
 
 	public static JavaVersion getJavaVersion() {
 		//
-		final Integer version = getJavaVersionAsInteger();
-		//
-		final List<JavaVersion> list = getJavaVersionsByVersion(JavaVersion.values(), version);
+		final List<JavaVersion> list = getJavaVersionsByVersion(JavaVersion.values(), getJavaVersionAsInteger());
 		//
 		final int size = size(list);
 		//
@@ -44,7 +44,7 @@ public final class JavaVersionUtil {
 				public int compare(final JavaVersion jv1, final JavaVersion jv2) {
 					//
 					try {
-
+						//
 						return ObjectUtils.compare(
 								Double.valueOf(StringUtils.replace(
 										StringUtils.substringAfter(getName(getFieldByValue(fs, jv1)), "_"), "_", ".")),
@@ -61,14 +61,68 @@ public final class JavaVersionUtil {
 
 			});
 			//
-		} else if (size == 0 && version != null && version.equals(getLatestJavaVersionAsInteger())) {
+		} else if (size == 0) {
 			//
-			return JavaVersion.JAVA_RECENT;
-			//
+			try {
+				final Integer major = getClassMajorNumber();
+				//
+				if (major != null && Integer.valueOf(major - 44).equals(getLatestJavaVersionAsInteger())) {
+					//
+					return JavaVersion.JAVA_RECENT;
+					//
+				} // if
+					//
+			} catch (final IOException e) {
+				//
+				e.printStackTrace();
+				//
+			} // try
+				//
 		} // if
 			//
 		throw new IllegalStateException();
 		//
+	}
+
+	private static Integer getClassMajorNumber() throws IOException {
+		//
+		InputStream is = null;
+		//
+		DataInputStream dis = null;
+		//
+		try {
+			//
+			if ((dis = new DataInputStream(is = Object.class.getResourceAsStream("/java/lang/Object.class")))
+					.readInt() != 0xCAFEBABE) {
+				//
+				throw new IOException("Invalid Java class");
+				//
+			} // if
+				//
+				// minor
+				//
+			dis.readShort();
+			//
+			// major
+			//
+			return Integer.valueOf(0xFFFF & dis.readShort());
+			//
+		} finally {
+			//
+			if (dis != null) {
+				//
+				dis.close();
+				//
+			} // if
+				//
+			if (is != null) {
+				//
+				is.close();
+				//
+			} // if
+				//
+		} // try
+			//
 	}
 
 	private static Integer getLatestJavaVersionAsInteger() {

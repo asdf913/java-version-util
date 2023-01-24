@@ -1,10 +1,11 @@
 package org.apache.commons.lang3;
 
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Member;
 import java.lang.reflect.Method;
+import java.util.Collections;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -12,55 +13,64 @@ import org.junit.Test;
 
 public class JavaVersionUtilTest {
 
-	private static Method METHOD_GET_LATEST_JAVA_VERSION_AS_INTEGER = null;
+	private static Method METHOD_GET_CLASS_MAJOR_NUMBER, METHOD_TO_STRING, METHOD_GET_LATEST_JAVA_VERSION_AS_INTEGER,
+			METHOD_GET_JAVA_VERSIONS_BY_VERSION, METHOD_GET_FIELD_BY_VALUE, METHOD_GET_NAME, METHOD_AND,
+			METHOD_GET_JAVA_VERSION_AS_INTEGER, METHOD_GET_JAVA_VERSION_AS_INTEGER1 = null;
 
 	@BeforeClass
 	public static void beforeClass() throws NoSuchMethodException {
 		//
-		(METHOD_GET_LATEST_JAVA_VERSION_AS_INTEGER = JavaVersionUtil.class
-				.getDeclaredMethod("getLatestJavaVersionAsInteger")).setAccessible(true);
+		final Class<?> clz = JavaVersionUtil.class;
+		//
+		(METHOD_GET_CLASS_MAJOR_NUMBER = clz.getDeclaredMethod("getClassMajorNumber")).setAccessible(true);
+		//
+		(METHOD_TO_STRING = clz.getDeclaredMethod("toString", Object.class)).setAccessible(true);
+		//
+		(METHOD_GET_LATEST_JAVA_VERSION_AS_INTEGER = clz.getDeclaredMethod("getLatestJavaVersionAsInteger"))
+				.setAccessible(true);
+		//
+		(METHOD_GET_JAVA_VERSIONS_BY_VERSION = clz.getDeclaredMethod("getJavaVersionsByVersion", JavaVersion[].class,
+				Integer.class)).setAccessible(true);
+		//
+		(METHOD_GET_FIELD_BY_VALUE = clz.getDeclaredMethod("getFieldByValue", Field[].class, Object.class))
+				.setAccessible(true);
+		//
+		(METHOD_GET_NAME = clz.getDeclaredMethod("getName", Member.class)).setAccessible(true);
+		//
+		(METHOD_AND = clz.getDeclaredMethod("and", Boolean.TYPE, Boolean.TYPE)).setAccessible(true);
+		//
+		(METHOD_GET_JAVA_VERSION_AS_INTEGER = clz.getDeclaredMethod("getJavaVersionAsInteger")).setAccessible(true);
+		//
+		(METHOD_GET_JAVA_VERSION_AS_INTEGER1 = clz.getDeclaredMethod("getJavaVersionAsInteger1")).setAccessible(true);
 		//
 	}
 
-	private static Integer getClassMajorNumber() throws IOException {
-		//
-		InputStream is = null;
-		//
-		DataInputStream dis = null;
-		//
+	private static Integer getClassMajorNumber() throws Throwable {
 		try {
-			//
-			if ((dis = new DataInputStream(is = Object.class.getResourceAsStream("/java/lang/Object.class")))
-					.readInt() != 0xCAFEBABE) {
-				//
-				throw new IOException("Invalid Java class");
-				//
+			final Object obj = METHOD_GET_CLASS_MAJOR_NUMBER.invoke(null);
+			if (obj == null) {
+				return null;
+			} else if (obj instanceof Integer) {
+				return (Integer) obj;
 			} // if
-				//
-				// minor
-				//
-			dis.readShort();
-			//
-			// major
-			//
-			return Integer.valueOf(0xFFFF & dis.readShort());
-			//
-		} finally {
-			//
-			if (dis != null) {
-				//
-				dis.close();
-				//
+			throw new Throwable(toString(obj.getClass()));
+		} catch (InvocationTargetException e) {
+			throw e.getTargetException();
+		}
+	}
+
+	private static String toString(final Object instance) throws Throwable {
+		try {
+			final Object obj = METHOD_TO_STRING.invoke(null, instance);
+			if (obj == null) {
+				return null;
+			} else if (obj instanceof String) {
+				return (String) obj;
 			} // if
-				//
-			if (is != null) {
-				//
-				is.close();
-				//
-			} // if
-				//
-		} // try
-			//
+			throw new Throwable(toString(obj.getClass()));
+		} catch (InvocationTargetException e) {
+			throw e.getTargetException();
+		}
 	}
 
 	@Test
@@ -110,13 +120,153 @@ public class JavaVersionUtilTest {
 		return instance != null ? instance.intValue() : defaultValue;
 	}
 
-	private static String toString(final Object instance) {
-		return instance != null ? instance.toString() : null;
-	}
-
 	private static Integer getLatestJavaVersionAsInteger() throws Throwable {
 		try {
 			final Object obj = METHOD_GET_LATEST_JAVA_VERSION_AS_INTEGER.invoke(null);
+			if (obj == null) {
+				return null;
+			} else if (obj instanceof Integer) {
+				return (Integer) obj;
+			} // if
+			throw new Throwable(toString(obj.getClass()));
+		} catch (InvocationTargetException e) {
+			throw e.getTargetException();
+		}
+	}
+
+	@Test
+	public void testGetJavaVersionsByVersion() throws Throwable {
+		//
+		Assert.assertNull(getJavaVersionsByVersion(null, null));
+		//
+		Assert.assertEquals(Collections.singletonList(null),
+				getJavaVersionsByVersion(new JavaVersion[] { null }, null));
+		//
+		Assert.assertNull(getJavaVersionsByVersion(new JavaVersion[] { null }, Integer.valueOf(0)));
+		//
+		Assert.assertEquals(Collections.singletonList(null),
+				getJavaVersionsByVersion(new JavaVersion[] { null, null }, null));
+		//
+	}
+
+	private static List<JavaVersion> getJavaVersionsByVersion(final JavaVersion[] jvs, final Integer version)
+			throws Throwable {
+		try {
+			final Object obj = METHOD_GET_JAVA_VERSIONS_BY_VERSION.invoke(null, jvs, version);
+			if (obj == null) {
+				return null;
+			} else if (obj instanceof List) {
+				return (List) obj;
+			} // if
+			throw new Throwable(toString(obj.getClass()));
+		} catch (InvocationTargetException e) {
+			throw e.getTargetException();
+		}
+	}
+
+	@Test
+	public void testGetFieldByValue() throws Throwable {
+		//
+		Assert.assertNull(getFieldByValue(null, null));
+		//
+		final Field fieldMaxValue = Integer.class.getDeclaredField("MAX_VALUE");
+		//
+		Assert.assertNull(getFieldByValue(
+				new Field[] { null, Integer.class.getDeclaredField("value"), fieldMaxValue, fieldMaxValue }, null));
+		//
+	}
+
+	private static Field getFieldByValue(final Field[] fs, final Object value) throws Throwable {
+		try {
+			final Object obj = METHOD_GET_FIELD_BY_VALUE.invoke(null, fs, value);
+			if (obj == null) {
+				return null;
+			} else if (obj instanceof Field) {
+				return (Field) obj;
+			} // if
+			throw new Throwable(toString(obj.getClass()));
+		} catch (InvocationTargetException e) {
+			throw e.getTargetException();
+		}
+	}
+
+	@Test
+	public void testGetName() throws Throwable {
+		//
+		Assert.assertNull(getName(null));
+		//
+		final String name = "toString";
+		//
+		Assert.assertEquals(name, getName(Object.class.getDeclaredMethod(name)));
+		//
+	}
+
+	private static String getName(final Member instance) throws Throwable {
+		try {
+			final Object obj = METHOD_GET_NAME.invoke(null, instance);
+			if (obj == null) {
+				return null;
+			} else if (obj instanceof String) {
+				return (String) obj;
+			} // if
+			throw new Throwable(toString(obj.getClass()));
+		} catch (InvocationTargetException e) {
+			throw e.getTargetException();
+		}
+	}
+
+	@Test
+	public void testAnd() throws Throwable {
+		//
+		Assert.assertFalse(and(true, false));
+		//
+		Assert.assertTrue(and(true, true));
+		//
+	}
+
+	private static boolean and(final boolean a, final boolean b) throws Throwable {
+		try {
+			final Object obj = METHOD_AND.invoke(null, a, b);
+			if (obj instanceof Boolean) {
+				return (Boolean) obj;
+			} // if
+			throw new Throwable(toString(obj != null ? obj.getClass() : null));
+		} catch (InvocationTargetException e) {
+			throw e.getTargetException();
+		}
+	}
+
+	@Test
+	public void testGetJavaVersionAsInteger() throws Throwable {
+		//
+		Assert.assertNotNull(getJavaVersionAsInteger());
+		//
+	}
+
+	private static Integer getJavaVersionAsInteger() throws Throwable {
+		try {
+			final Object obj = METHOD_GET_JAVA_VERSION_AS_INTEGER.invoke(null);
+			if (obj == null) {
+				return null;
+			} else if (obj instanceof Integer) {
+				return (Integer) obj;
+			} // if
+			throw new Throwable(toString(obj.getClass()));
+		} catch (InvocationTargetException e) {
+			throw e.getTargetException();
+		}
+	}
+
+	@Test
+	public void testGetJavaVersionAsInteger1() throws Throwable {
+		//
+		Assert.assertNotNull(getJavaVersionAsInteger1());
+		//
+	}
+
+	private static Integer getJavaVersionAsInteger1() throws Throwable {
+		try {
+			final Object obj = METHOD_GET_JAVA_VERSION_AS_INTEGER1.invoke(null);
 			if (obj == null) {
 				return null;
 			} else if (obj instanceof Integer) {
