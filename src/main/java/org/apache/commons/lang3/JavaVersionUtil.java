@@ -1,13 +1,19 @@
 package org.apache.commons.lang3;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Modifier;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 public final class JavaVersionUtil {
 
@@ -16,9 +22,9 @@ public final class JavaVersionUtil {
 
 	public static JavaVersion getJavaVersion() {
 		//
-		final Integer integer = getJavaVersionAsInteger();
+		final Integer version = getJavaVersionAsInteger();
 		//
-		final List<JavaVersion> list = getJavaVersionsByVersion(JavaVersion.values(), integer);
+		final List<JavaVersion> list = getJavaVersionsByVersion(JavaVersion.values(), version);
 		//
 		final int size = size(list);
 		//
@@ -37,19 +43,88 @@ public final class JavaVersionUtil {
 				@Override
 				public int compare(final JavaVersion jv1, final JavaVersion jv2) {
 					//
-					return ObjectUtils.compare(
-							Double.valueOf(StringUtils.replace(
-									StringUtils.substringAfter(getName(getFieldByValue(fs, jv1)), "_"), "_", ".")),
-							Double.valueOf(StringUtils.replace(
-									StringUtils.substringAfter(getName(getFieldByValue(fs, jv2)), "_"), "_", ".")));
-					//
+					try {
+
+						return ObjectUtils.compare(
+								Double.valueOf(StringUtils.replace(
+										StringUtils.substringAfter(getName(getFieldByValue(fs, jv1)), "_"), "_", ".")),
+								Double.valueOf(StringUtils.replace(
+										StringUtils.substringAfter(getName(getFieldByValue(fs, jv2)), "_"), "_", ".")));
+						//
+					} catch (final NumberFormatException e) {
+						//
+						return 0;
+						//
+					} // try
+						//
 				}
 
 			});
 			//
+		} else if (size == 0) {
+			//
+			if (version != null && version.equals(getLatestJavaVersionAsInteger())) {
+				//
+				return JavaVersion.JAVA_RECENT;
+				//
+			} // if
+				//
 		} // if
 			//
-		return null;
+		throw new IllegalStateException();
+		//
+	}
+
+	private static Integer getLatestJavaVersionAsInteger() {
+		//
+		Integer latestVersion = null;
+		//
+		try {
+			//
+			final Document document = Jsoup
+					.parse(new URL("https://www.oracle.com/java/technologies/downloads/archive/"), 0);
+			//
+			final List<Element> elements = document != null ? document.select(".icn-chevron-right a") : null;
+			//
+			Element element = null;
+			//
+			String text = null;
+			//
+			for (int i = 0; elements != null && i < elements.size(); i++) {
+				//
+				if ((element = elements.get(i)) == null || !StringUtils.startsWith(text = element.text(), "Java SE")) {
+					//
+					continue;
+					//
+				} // if
+					//
+				if (StringUtils.contains(text = StringUtils.trim(StringUtils.substringAfter(text, "Java SE")), ' ')) {
+					//
+					text = StringUtils.substringBefore(text, " ");
+					//
+				} else if (StringUtils.contains(text, '.')) {
+					//
+					text = StringUtils.substringAfter(text, ".");
+					//
+				} // if
+					//
+				try {
+					//
+					latestVersion = ObjectUtils.max(latestVersion, Integer.valueOf(text));
+					//
+				} catch (final NumberFormatException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} // try
+					//
+			} // for
+				//
+		} catch (final IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} // try
+			//
+		return latestVersion;
 		//
 	}
 
@@ -59,9 +134,12 @@ public final class JavaVersionUtil {
 		//
 		if (jvs != null) {
 			//
+			String toString, versionToString = null;
+			//
 			for (final JavaVersion jv : jvs) {
 				//
-				if (StringUtils.equals(toString(jv), toString(version))) {
+				if (StringUtils.equals(toString = toString(jv), versionToString = toString(version))
+						|| StringUtils.equals(StringUtils.substringAfter(toString, "."), versionToString)) {
 					//
 					if (list == null) {
 						//
