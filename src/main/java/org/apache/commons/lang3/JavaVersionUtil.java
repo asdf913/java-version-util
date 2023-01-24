@@ -125,7 +125,7 @@ public final class JavaVersionUtil {
 				//
 			try {
 				//
-				if (f.get(null) == value && !fields.contains(value)) {
+				if (and(f.get(null) == value, !fields.contains(value))) {
 					//
 					fields.add(f);
 					//
@@ -152,6 +152,10 @@ public final class JavaVersionUtil {
 			//
 		return null;
 		//
+	}
+
+	private static boolean and(final boolean a, final boolean b) {
+		return a && b;
 	}
 
 	private static Integer getJavaVersionAsInteger() {
