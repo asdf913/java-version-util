@@ -16,6 +16,8 @@ import java.util.List;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+import org.jsoup.select.Selector;
 
 public final class JavaVersionUtil {
 
@@ -131,10 +133,9 @@ public final class JavaVersionUtil {
 		//
 		try {
 			//
-			final Document document = Jsoup
-					.parse(new URL("https://www.oracle.com/java/technologies/downloads/archive/"), 0);
-			//
-			final List<Element> elements = document != null ? document.select(".icn-chevron-right a") : null;
+			final List<Element> elements = select(
+					Jsoup.parse(new URL("https://www.oracle.com/java/technologies/downloads/archive/"), 0),
+					".icn-chevron-right a");
 			//
 			Element element = null;
 			//
@@ -176,6 +177,10 @@ public final class JavaVersionUtil {
 			//
 		return latestVersion;
 		//
+	}
+
+	private static Elements select(final Element instance, final String cssQuery) {
+		return instance != null ? instance.select(cssQuery) : null;
 	}
 
 	private static List<JavaVersion> getJavaVersionsByVersion(final JavaVersion[] jvs, final Integer version) {
