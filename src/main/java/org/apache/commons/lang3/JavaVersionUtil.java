@@ -109,15 +109,15 @@ public final class JavaVersionUtil {
 					latestVersion = ObjectUtils.max(latestVersion, Integer.valueOf(text));
 					//
 				} catch (final NumberFormatException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					//
 				} // try
 					//
 			} // for
 				//
 		} catch (final IOException e) {
-			// TODO Auto-generated catch block
+			//
 			e.printStackTrace();
+			//
 		} // try
 			//
 		return latestVersion;
@@ -206,8 +206,9 @@ public final class JavaVersionUtil {
 				} // if
 					//
 			} catch (final IllegalAccessException e) {
-				// TODO Auto-generated catch block
+				//
 				e.printStackTrace();
+				//
 			} // try
 				//
 		} // for
