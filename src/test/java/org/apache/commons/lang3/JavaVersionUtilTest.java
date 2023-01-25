@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.junit.Assert;
@@ -310,8 +311,20 @@ public class JavaVersionUtilTest {
 		//
 		printStackTrace(null);
 		//
-		printStackTrace(new Throwable());
+		final Throwable throwable = new Throwable();
 		//
+		final Object before = FieldUtils.readField(throwable, "stackTrace", true);
+		//
+		Assert.assertArrayEquals(new Object[] {}, cast(Object[].class, before));
+		//
+		printStackTrace(throwable);
+		//
+		Assert.assertNotEquals(before, FieldUtils.readField(throwable, "stackTrace", true));
+		//
+	}
+
+	private static <T> T cast(final Class<T> clz, final Object instance) {
+		return clz != null && clz.isInstance(instance) ? clz.cast(instance) : null;
 	}
 
 	private static void printStackTrace(final Throwable throwable) throws Throwable {
