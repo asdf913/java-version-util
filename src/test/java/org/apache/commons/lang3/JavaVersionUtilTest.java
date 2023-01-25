@@ -17,8 +17,7 @@ public class JavaVersionUtilTest {
 
 	private static Method METHOD_GET_CLASS_MAJOR_NUMBER, METHOD_TO_STRING, METHOD_GET_LATEST_JAVA_VERSION_AS_INTEGER,
 			METHOD_GET_JAVA_VERSIONS_BY_VERSION, METHOD_GET_FIELD_BY_VALUE, METHOD_GET_NAME, METHOD_AND,
-			METHOD_GET_JAVA_VERSION_AS_INTEGER, METHOD_GET_JAVA_VERSION_AS_INTEGER1, METHOD_SELECT, METHOD_TEXT,
-			METHOD_PRINT_STACK_TRACE = null;
+			METHOD_GET_JAVA_VERSION_AS_INTEGER, METHOD_SELECT, METHOD_TEXT, METHOD_PRINT_STACK_TRACE = null;
 
 	@BeforeClass
 	public static void beforeClass() throws NoSuchMethodException {
@@ -43,8 +42,6 @@ public class JavaVersionUtilTest {
 		(METHOD_AND = clz.getDeclaredMethod("and", Boolean.TYPE, Boolean.TYPE)).setAccessible(true);
 		//
 		(METHOD_GET_JAVA_VERSION_AS_INTEGER = clz.getDeclaredMethod("getJavaVersionAsInteger")).setAccessible(true);
-		//
-		(METHOD_GET_JAVA_VERSION_AS_INTEGER1 = clz.getDeclaredMethod("getJavaVersionAsInteger1")).setAccessible(true);
 		//
 		(METHOD_SELECT = clz.getDeclaredMethod("select", Element.class, String.class)).setAccessible(true);
 		//
@@ -255,27 +252,6 @@ public class JavaVersionUtilTest {
 	private static Integer getJavaVersionAsInteger() throws Throwable {
 		try {
 			final Object obj = METHOD_GET_JAVA_VERSION_AS_INTEGER.invoke(null);
-			if (obj == null) {
-				return null;
-			} else if (obj instanceof Integer) {
-				return (Integer) obj;
-			} // if
-			throw new Throwable(toString(obj.getClass()));
-		} catch (InvocationTargetException e) {
-			throw e.getTargetException();
-		}
-	}
-
-	@Test
-	public void testGetJavaVersionAsInteger1() throws Throwable {
-		//
-		Assert.assertNotNull(getJavaVersionAsInteger1());
-		//
-	}
-
-	private static Integer getJavaVersionAsInteger1() throws Throwable {
-		try {
-			final Object obj = METHOD_GET_JAVA_VERSION_AS_INTEGER1.invoke(null);
 			if (obj == null) {
 				return null;
 			} else if (obj instanceof Integer) {

@@ -13,7 +13,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.jsoup.Jsoup;
@@ -334,93 +337,60 @@ public final class JavaVersionUtil {
 
 	private static Integer getJavaVersionAsInteger() {
 		//
-		if (forName("java.lang.WrongThreadException") != null) {
-			//
-			return 19;
-			//
-		} else if (forName("java.net.spi.InetAddressResolver") != null) {
-			//
-			return 18;
-			//
-		} else if (forName("java.util.random.RandomGeneratorFactory") != null) {
-			//
-			return 17;
-			//
-		} else if (forName("java.net.UnixDomainSocketAddress") != null) {
-			//
-			return 16;
-			//
-		} else if (forName("java.security.interfaces.EdECKey") != null) {
-			//
-			return 15;
-			//
-		} else if (forName("java.io.Serial") != null) {
-			//
-			return 14;
-			//
-		} else if (forName("com.sun.source.util.ParameterNameProvider") != null) {
-			//
-			return 13;
-			//
-		} else if (forName("com.sun.source.doctree.SystemPropertyTree") != null) {
-			//
-			return 12;
-			//
-		} else if (forName("java.net.http.HttpClient") != null) {
-			//
-			return 11;
-			//
-		} else if (forName("com.sun.source.doctree.SummaryTree") != null) {
-			//
-			return 10;
-			//
-		} else if (forName("java.lang.Module") != null) {
-			//
-			return 9;
-			//
-		} else if (forName("java.util.stream.Stream") != null) {
-			//
-			return 8;
-			//
-		} else if (forName("java.nio.file.attribute.FileAttribute") != null) {
-			//
-			return 7;
-			//
-		} else if (forName("java.io.Console") != null) {
-			//
-			return 6;
-			//
-		} else if (forName("java.lang.ProcessBuilder") != null) {
-			//
-			return 5;
-			//
-		} // if
-			//
-		return getJavaVersionAsInteger1();
+		final Map<Integer, String> map = new LinkedHashMap<Integer, String>(
+				Collections.singletonMap(Integer.valueOf(1), "java.lang.Object"));
 		//
-	}
-
-	private static Integer getJavaVersionAsInteger1() {
+		map.put(Integer.valueOf(2), "java.util.Collection");
 		//
-		if (forName("java.nio.ByteBuffer") != null) {
+		map.put(Integer.valueOf(3), "java.lang.reflect.InvocationHandler");
+		//
+		map.put(Integer.valueOf(4), "java.nio.ByteBuffer");
+		//
+		map.put(Integer.valueOf(5), "java.lang.ProcessBuilder");
+		//
+		map.put(Integer.valueOf(6), "java.io.Console");
+		//
+		map.put(Integer.valueOf(7), "java.nio.file.attribute.FileAttribute");
+		//
+		map.put(Integer.valueOf(8), "java.util.stream.Stream");
+		//
+		map.put(Integer.valueOf(9), "java.lang.Module");
+		//
+		map.put(Integer.valueOf(10), "com.sun.source.doctree.SummaryTree");
+		//
+		map.put(Integer.valueOf(11), "java.net.http.HttpClient");
+		//
+		map.put(Integer.valueOf(12), "com.sun.source.doctree.SystemPropertyTree");
+		//
+		map.put(Integer.valueOf(13), "com.sun.source.util.ParameterNameProvider");
+		//
+		map.put(Integer.valueOf(14), "java.io.Serial");
+		//
+		map.put(Integer.valueOf(15), "java.security.interfaces.EdECKey");
+		//
+		map.put(Integer.valueOf(16), "java.net.UnixDomainSocketAddress");
+		//
+		map.put(Integer.valueOf(17), "java.util.random.RandomGeneratorFactory");
+		//
+		map.put(Integer.valueOf(18), "java.net.spi.InetAddressResolver");
+		//
+		map.put(Integer.valueOf(19), "java.lang.WrongThreadException");
+		//
+		Integer result = null;
+		//
+		for (final Entry<Integer, String> entry : map.entrySet()) {
 			//
-			return 4;
+			if (entry == null || forName(entry.getValue()) == null) {
+				//
+				continue;
+				//
+			} // if
+				//
+			result = ObjectUtils.max(result, entry.getKey());
 			//
-		} else if (forName("java.lang.reflect.InvocationHandler") != null) {
+		} // for
 			//
-			return 3;
-			//
-		} else if (forName("java.util.Collection") != null) {
-			//
-			return 2;
-			//
-		} else if (forName("java.lang.Object") != null) {
-			//
-			return 1;
-			//
-		} // if
-			//
-		return null;
+		return result;
 		//
 	}
 
