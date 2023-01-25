@@ -4,7 +4,9 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Member;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -74,7 +77,7 @@ public final class JavaVersionUtil {
 					//
 			} catch (final IOException e) {
 				//
-				e.printStackTrace();
+				printStackTrace(e);
 				//
 			} // try
 				//
@@ -82,6 +85,43 @@ public final class JavaVersionUtil {
 			//
 		throw new IllegalStateException();
 		//
+	}
+
+	private static void printStackTrace(final Throwable throwable) {
+		//
+		try {
+			//
+			final Method method = Throwable.class.getDeclaredMethod("printStackTrace");
+			//
+			if (method != null) {
+				//
+				method.setAccessible(true);
+				//
+			} // if
+				//
+			if (method != null && (Modifier.isStatic(method.getModifiers()) || throwable != null)) {
+				//
+				method.invoke(throwable);
+				//
+			} // if
+				//
+		} catch (final IllegalAccessException e) {
+			//
+			printStackTrace(e);
+			//
+		} catch (final NoSuchMethodException e) {
+			//
+			printStackTrace(e);
+			//
+		} catch (final InvocationTargetException e) {
+			//
+			final Throwable targetException = e.getTargetException();
+			//
+			printStackTrace(ObjectUtils.firstNonNull(ExceptionUtils.getRootCause(targetException), targetException,
+					ExceptionUtils.getRootCause(e), e));
+			//
+		} // try
+			//
 	}
 
 	private static Integer getClassMajorNumber() throws IOException {
@@ -167,7 +207,7 @@ public final class JavaVersionUtil {
 				//
 		} catch (final IOException e) {
 			//
-			e.printStackTrace();
+			printStackTrace(e);
 			//
 		} // try
 			//
@@ -266,7 +306,7 @@ public final class JavaVersionUtil {
 					//
 			} catch (final IllegalAccessException e) {
 				//
-				e.printStackTrace();
+				printStackTrace(e);
 				//
 			} // try
 				//

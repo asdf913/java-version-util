@@ -17,7 +17,8 @@ public class JavaVersionUtilTest {
 
 	private static Method METHOD_GET_CLASS_MAJOR_NUMBER, METHOD_TO_STRING, METHOD_GET_LATEST_JAVA_VERSION_AS_INTEGER,
 			METHOD_GET_JAVA_VERSIONS_BY_VERSION, METHOD_GET_FIELD_BY_VALUE, METHOD_GET_NAME, METHOD_AND,
-			METHOD_GET_JAVA_VERSION_AS_INTEGER, METHOD_GET_JAVA_VERSION_AS_INTEGER1, METHOD_SELECT, METHOD_TEXT = null;
+			METHOD_GET_JAVA_VERSION_AS_INTEGER, METHOD_GET_JAVA_VERSION_AS_INTEGER1, METHOD_SELECT, METHOD_TEXT,
+			METHOD_PRINT_STACK_TRACE = null;
 
 	@BeforeClass
 	public static void beforeClass() throws NoSuchMethodException {
@@ -48,6 +49,8 @@ public class JavaVersionUtilTest {
 		(METHOD_SELECT = clz.getDeclaredMethod("select", Element.class, String.class)).setAccessible(true);
 		//
 		(METHOD_TEXT = clz.getDeclaredMethod("text", Element.class)).setAccessible(true);
+		//
+		(METHOD_PRINT_STACK_TRACE = clz.getDeclaredMethod("printStackTrace", Throwable.class)).setAccessible(true);
 		//
 	}
 
@@ -321,6 +324,23 @@ public class JavaVersionUtilTest {
 				return (String) obj;
 			} // if
 			throw new Throwable(toString(obj.getClass()));
+		} catch (InvocationTargetException e) {
+			throw e.getTargetException();
+		}
+	}
+
+	@Test
+	public void testPrintStackTrace() throws Throwable {
+		//
+		printStackTrace(null);
+		//
+		printStackTrace(new Throwable());
+		//
+	}
+
+	private static void printStackTrace(final Throwable throwable) throws Throwable {
+		try {
+			METHOD_PRINT_STACK_TRACE.invoke(null, throwable);
 		} catch (InvocationTargetException e) {
 			throw e.getTargetException();
 		}
