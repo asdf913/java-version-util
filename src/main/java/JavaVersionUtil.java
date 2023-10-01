@@ -79,10 +79,6 @@ public final class JavaVersionUtil {
 			//
 			return 7;
 			//
-		} else if (forName("java.io.Console") != null) {
-			//
-			return 6;
-			//
 		} // if
 			//
 		return getJavaVersionAsInteger1();
@@ -91,7 +87,11 @@ public final class JavaVersionUtil {
 
 	private static Integer getJavaVersionAsInteger1() {
 		//
-		if (forName("java.lang.ProcessBuilder") != null) {
+		if (forName("java.io.Console") != null) {
+			//
+			return 6;
+			//
+		} else if (forName("java.lang.ProcessBuilder") != null) {
 			//
 			return 5;
 			//
