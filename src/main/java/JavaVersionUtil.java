@@ -19,7 +19,11 @@ public final class JavaVersionUtil {
 
 	public static Integer getJavaVersionAsInteger() {
 		//
-		if (forName("java.lang.foreign.Arena") != null) {
+		if (forName("javax.crypto.KEM") != null) {
+			//
+			return 21;
+			//
+		} else if (forName("java.lang.foreign.Arena") != null) {
 			//
 			return 20;
 			//
