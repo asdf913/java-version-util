@@ -83,10 +83,6 @@ public final class JavaVersionUtil {
 			//
 			return 6;
 			//
-		} else if (forName("java.lang.ProcessBuilder") != null) {
-			//
-			return 5;
-			//
 		} // if
 			//
 		return getJavaVersionAsInteger1();
@@ -95,7 +91,11 @@ public final class JavaVersionUtil {
 
 	private static Integer getJavaVersionAsInteger1() {
 		//
-		if (forName("java.nio.ByteBuffer") != null) {
+		if (forName("java.lang.ProcessBuilder") != null) {
+			//
+			return 5;
+			//
+		} else if (forName("java.nio.ByteBuffer") != null) {
 			//
 			return 4;
 			//
