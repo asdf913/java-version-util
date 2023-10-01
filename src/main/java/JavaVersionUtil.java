@@ -19,7 +19,11 @@ public final class JavaVersionUtil {
 
 	public static Integer getJavaVersionAsInteger() {
 		//
-		if (forName("java.lang.WrongThreadException") != null) {
+		if (forName("java.lang.foreign.Arena") != null) {
+			//
+			return 20;
+			//
+		} else if (forName("java.lang.WrongThreadException") != null) {
 			//
 			return 19;
 			//
