@@ -19,7 +19,11 @@ public final class JavaVersionUtil {
 
 	public static Integer getJavaVersionAsInteger() {
 		//
-		if (forName("javax.crypto.KEM") != null) {
+		if (forName("java.lang.classfile.attribute.ConstantValueAttribute") != null) {
+			//
+			return 22;
+			//
+		} else if (forName("javax.crypto.KEM") != null) {
 			//
 			return 21;
 			//
