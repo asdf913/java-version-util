@@ -27,5 +27,12 @@
 			<version>4.13.2</version>
 			<scope>test</scope>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/io.github.toolfactory/narcissus -->
+		<dependency>
+			<groupId>io.github.toolfactory</groupId>
+			<artifactId>narcissus</artifactId>
+			<version>1.0.7</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 </project>

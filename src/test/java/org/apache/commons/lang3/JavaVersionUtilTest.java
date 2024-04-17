@@ -14,6 +14,8 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import io.github.toolfactory.narcissus.Narcissus;
+
 public class JavaVersionUtilTest {
 
 	private static Method METHOD_GET_CLASS_MAJOR_NUMBER, METHOD_TO_STRING, METHOD_GET_LATEST_JAVA_VERSION_AS_INTEGER,
@@ -313,14 +315,29 @@ public class JavaVersionUtilTest {
 		//
 		final Throwable throwable = new Throwable();
 		//
-		final Object before = FieldUtils.readField(throwable, "stackTrace", true);
-		//
-		Assert.assertArrayEquals(new Object[] {}, cast(Object[].class, before));
-		//
-		printStackTrace(throwable);
-		//
-		Assert.assertNotEquals(before, FieldUtils.readField(throwable, "stackTrace", true));
-		//
+		if (ObjectUtils.compare(getJavaVersionAsInteger(), Integer.valueOf(16)) >= 0) {
+			//
+			final Object before = Narcissus.getField(throwable, Throwable.class.getDeclaredField("stackTrace"));
+			//
+			Assert.assertArrayEquals(new Object[] {}, cast(Object[].class, before));
+			//
+			printStackTrace(throwable);
+			//
+			Assert.assertNotEquals(before,
+					Narcissus.getField(throwable, Throwable.class.getDeclaredField("stackTrace")));
+			//
+		} else {
+			//
+			final Object before = FieldUtils.readField(throwable, "stackTrace", true);
+			//
+			Assert.assertArrayEquals(new Object[] {}, cast(Object[].class, before));
+			//
+			printStackTrace(throwable);
+			//
+			Assert.assertNotEquals(before, FieldUtils.readField(throwable, "stackTrace", true));
+			//
+		} // if
+			//
 	}
 
 	private static <T> T cast(final Class<T> clz, final Object instance) {
