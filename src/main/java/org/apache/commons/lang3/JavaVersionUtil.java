@@ -378,6 +378,8 @@ public final class JavaVersionUtil {
 		//
 		map.put(Integer.valueOf(20), "java.lang.foreign.Arena");
 		//
+		map.put(Integer.valueOf(21), "java.lang.runtime.TemplateRuntime");
+		//
 		Integer result = null;
 		//
 		for (final Entry<Integer, String> entry : map.entrySet()) {
