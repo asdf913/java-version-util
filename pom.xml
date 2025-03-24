@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.github.asdf913</groupId>
 	<artifactId>java-version-util</artifactId>
-	<version>1.0.2</version>
+	<version>1.0.3</version>
 	<properties>
 		<maven.compiler.target>8</maven.compiler.target>
 		<maven.compiler.source>8</maven.compiler.source>
