@@ -378,9 +378,9 @@ public final class JavaVersionUtil {
 		//
 		map.put(Integer.valueOf(20), "java.lang.foreign.Arena");
 		//
-		map.put(Integer.valueOf(21), "java.lang.runtime.TemplateRuntime");
+		map.put(Integer.valueOf(21), "javax.crypto.KEM");
 		//
-		map.put(Integer.valueOf(22), "java.lang.classfile.attribute.LineNumberInfo");
+		map.put(Integer.valueOf(22), "java.lang.classfile.attribute.ConstantValueAttribute");
 		//
 		Integer result = null;
 		//
