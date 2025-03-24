@@ -380,6 +380,8 @@ public final class JavaVersionUtil {
 		//
 		map.put(Integer.valueOf(21), "java.lang.runtime.TemplateRuntime");
 		//
+		map.put(Integer.valueOf(22), "java.lang.classfile.attribute.LineNumberInfo");
+		//
 		Integer result = null;
 		//
 		for (final Entry<Integer, String> entry : map.entrySet()) {
