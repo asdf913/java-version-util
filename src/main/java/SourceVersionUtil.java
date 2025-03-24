@@ -72,7 +72,19 @@ public final class SourceVersionUtil {
 
 	private static Integer getJavaVersionAsInteger() {
 		//
-		if (forName("java.lang.WrongThreadException") != null) {
+		if (forName("java.lang.classfile.attribute.ConstantValueAttribute") != null) {
+			//
+			return 22;
+			//
+		} else if (forName("javax.crypto.KEM") != null) {
+			//
+			return 21;
+			//
+		} else if (forName("java.lang.foreign.Arena") != null) {
+			//
+			return 20;
+			//
+		} else if (forName("java.lang.WrongThreadException") != null) {
 			//
 			return 19;
 			//
