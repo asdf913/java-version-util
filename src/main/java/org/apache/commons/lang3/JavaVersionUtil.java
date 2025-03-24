@@ -376,6 +376,8 @@ public final class JavaVersionUtil {
 		//
 		map.put(Integer.valueOf(19), "java.lang.WrongThreadException");
 		//
+		map.put(Integer.valueOf(20), "java.lang.foreign.Arena");
+		//
 		Integer result = null;
 		//
 		for (final Entry<Integer, String> entry : map.entrySet()) {
