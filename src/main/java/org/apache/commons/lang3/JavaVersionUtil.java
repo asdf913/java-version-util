@@ -384,6 +384,8 @@ public final class JavaVersionUtil {
 		//
 		map.put(Integer.valueOf(23), "java.io.IO");
 		//
+		map.put(Integer.valueOf(24), "javax.crypto.KDF");
+		//
 		Integer result = null;
 		//
 		for (final Entry<Integer, String> entry : map.entrySet()) {

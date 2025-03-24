@@ -19,7 +19,11 @@ public final class JavaVersionUtil {
 
 	public static Integer getJavaVersionAsInteger() {
 		//
-		if (forName("java.io.IO") != null) {
+		if (forName("javax.crypto.KDF") != null) {
+			//
+			return 24;
+			//
+		} else if (forName("java.io.IO") != null) {
 			//
 			return 23;
 			//
