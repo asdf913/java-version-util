@@ -72,7 +72,11 @@ public final class SourceVersionUtil {
 
 	private static Integer getJavaVersionAsInteger() {
 		//
-		if (forName("java.lang.classfile.attribute.ConstantValueAttribute") != null) {
+		if (forName("java.io.IO") != null) {
+			//
+			return 23;
+			//
+		} else if (forName("java.lang.classfile.attribute.ConstantValueAttribute") != null) {
 			//
 			return 22;
 			//

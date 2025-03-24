@@ -382,6 +382,8 @@ public final class JavaVersionUtil {
 		//
 		map.put(Integer.valueOf(22), "java.lang.classfile.attribute.ConstantValueAttribute");
 		//
+		map.put(Integer.valueOf(23), "java.io.IO");
+		//
 		Integer result = null;
 		//
 		for (final Entry<Integer, String> entry : map.entrySet()) {
