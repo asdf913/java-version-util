@@ -386,6 +386,8 @@ public final class JavaVersionUtil {
 		//
 		map.put(Integer.valueOf(24), "javax.crypto.KDF");
 		//
+		map.put(Integer.valueOf(25), "java.security.PEMRecord");
+		//
 		Integer result = null;
 		//
 		for (final Entry<Integer, String> entry : map.entrySet()) {

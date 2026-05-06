@@ -72,7 +72,11 @@ public final class SourceVersionUtil {
 
 	private static Integer getJavaVersionAsInteger() {
 		//
-		if (forName("javax.crypto.KDF") != null) {
+		if (forName("java.security.PEMRecord") != null) {
+			//
+			return 25;
+			//
+		} else if (forName("javax.crypto.KDF") != null) {
 			//
 			return 24;
 			//
