@@ -10,6 +10,7 @@
 		<maven.compiler.source>8</maven.compiler.source>
 	</properties>
 	<url>https://github.com/asdf913/java-version-util</url>
+	<name>Java Version Utility</name>
 	<description>Java Version Utility</description>
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
