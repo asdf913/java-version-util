@@ -388,6 +388,8 @@ public final class JavaVersionUtil {
 		//
 		map.put(Integer.valueOf(25), "java.security.PEMRecord");
 		//
+		map.put(Integer.valueOf(26), "java.security.PEM");
+		//
 		Integer result = null;
 		//
 		for (final Entry<Integer, String> entry : map.entrySet()) {

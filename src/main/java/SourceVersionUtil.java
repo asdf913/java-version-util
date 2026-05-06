@@ -72,7 +72,11 @@ public final class SourceVersionUtil {
 
 	private static Integer getJavaVersionAsInteger() {
 		//
-		if (forName("java.security.PEMRecord") != null) {
+		if (forName("java.security.PEM") != null) {
+			//
+			return 26;
+			//
+		} else if (forName("java.security.PEMRecord") != null) {
 			//
 			return 25;
 			//
