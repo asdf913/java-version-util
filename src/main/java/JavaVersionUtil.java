@@ -18,8 +18,12 @@ public final class JavaVersionUtil {
 	}
 
 	public static Integer getJavaVersionAsInteger() {
-		//
-		if (forName("java.security.PEM") != null) {
+
+		if (forName("java.security.BinaryEncodable") != null) {
+			//
+			return 27;
+			//
+		} else if (forName("java.security.PEM") != null) {
 			//
 			return 26;
 			//
